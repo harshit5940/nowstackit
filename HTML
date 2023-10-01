@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <base target="_top">
+  </head>
+  <body>
+    <textarea id="data" style="display: none;"></textarea>
+    <script>
+      function handleFileSelect(evt) {
+        var file = evt.target.files[0];
+        var reader = new FileReader();
+        reader.onload = function(e) {
+          var data = e.target.result;
+          document.getElementById('data').value = data;
+        };
+        reader.readAsText(file);
+      }
+      document.getElementById('file').addEventListener('change', handleFileSelect, false);
+    </script>
+    <form>
+      <input type="file" id="file" name="file" accept=".csv">
+      <br><br>
+      <input type="button" value="Import" onclick="importCSV()">
+    </form>
+    <script>
+      function importCSV() {
+        var data = document.getElementById('data').value;
+        google.script.run.importCSV(data);
+        google.script.host.close();
+      }
+    </script>
+  </body>
+</html>
